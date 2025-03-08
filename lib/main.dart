@@ -12,6 +12,8 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+late Size size;
+
 void main() async {
   WidgetsFlutterBinding
       .ensureInitialized(); // ensuring WidgetsBinding is initalized before running a app

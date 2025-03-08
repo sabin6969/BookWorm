@@ -81,7 +81,22 @@ class _HomeViewState extends State<HomeView> {
                           12,
                         ),
                         child: BookWidget(
-                          item: value.bookResponseModel.items[index],
+                          id: value.bookResponseModel.items[index].id ?? "",
+                          authors: value.bookResponseModel.items[index]
+                                  .volumeInfo?.authors ??
+                              [],
+                          imageUrl: value.bookResponseModel.items[index]
+                              .volumeInfo?.imageLinks?.thumbnail,
+                          language: value.bookResponseModel.items[index]
+                              .volumeInfo?.language,
+                          pages: value.bookResponseModel.items[index].volumeInfo
+                              ?.pageCount,
+                          rating: value.bookResponseModel.items[index]
+                              .volumeInfo?.averageRating,
+                          title: value
+                              .bookResponseModel.items[index].volumeInfo?.title,
+                          ratingsCount: value.bookResponseModel.items[index]
+                              .volumeInfo?.ratingsCount,
                         ),
                       ),
                     );

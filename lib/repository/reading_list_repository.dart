@@ -5,6 +5,8 @@ import 'package:bookworm/local_db/app_db.dart';
 import 'package:drift/drift.dart';
 
 class ReadingListRepository {
+  final Database _database = getIt.get<Database>();
+
   Future<void> saveBook({
     required String id,
     required List<String> authors,
@@ -15,7 +17,7 @@ class ReadingListRepository {
     required BookStatus status,
   }) async {
     try {
-      await getIt.get<Database>().into(getIt.get<Database>().bookTable).insert(
+      await _database.into(_database.bookTable).insert(
             BookTableCompanion(
               id: Value(id),
               authors: Value(authors),
@@ -37,16 +39,29 @@ class ReadingListRepository {
     required String id,
   }) async {
     try {
-      await getIt
-          .get<Database>()
-          .delete(getIt.get<Database>().bookTable)
-          .delete(
+      await _database.delete(_database.bookTable).delete(
             BookTableCompanion(
               id: Value(
                 id,
               ),
             ),
           );
+    } catch (e) {
+      return Future.error(e);
+    }
+  }
+
+  Future<List<BookTableData>> getSavedBooks({
+    BookStatus? status,
+  }) async {
+    try {
+      final query = _database.select(_database.bookTable);
+      if (status != null) {
+        query.where(
+          (tbl) => tbl.status.equals(status.readableString),
+        );
+      }
+      return await query.get();
     } catch (e) {
       return Future.error(e);
     }

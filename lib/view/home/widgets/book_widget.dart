@@ -1,16 +1,37 @@
 import 'package:bookworm/core/constants/book_status.dart';
-import 'package:bookworm/model/book_response_model.dart';
 import 'package:bookworm/view_model/reading_list_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
-class BookWidget extends StatelessWidget {
-  final Item item;
+class BookWidget extends StatefulWidget {
+  final bool isReadingList;
+  final String? imageUrl;
+  final String? title;
+  final List<String> authors;
+  final int? pages;
+  final int? ratingsCount;
+  final String id;
+  final String? language;
+  final num? rating;
   const BookWidget({
     super.key,
-    required this.item,
+    required this.imageUrl,
+    required this.authors,
+    required this.title,
+    required this.pages,
+    required this.ratingsCount,
+    required this.id,
+    required this.language,
+    required this.rating,
+    this.isReadingList = false,
   });
 
+  @override
+  State<BookWidget> createState() => _BookWidgetState();
+}
+
+class _BookWidgetState extends State<BookWidget> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -24,8 +45,7 @@ class BookWidget extends StatelessWidget {
               width: 80,
               height: 120,
               child: Image.network(
-                item.volumeInfo?.imageLinks?.thumbnail ??
-                    'https://via.placeholder.com/80x120',
+                widget.imageUrl ?? 'https://via.placeholder.com/80x120',
                 fit: BoxFit.cover,
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) return child;
@@ -61,7 +81,7 @@ class BookWidget extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        item.volumeInfo?.title ?? "Title Not Available",
+                        widget.title ?? "Title Not Available",
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style:
@@ -71,65 +91,90 @@ class BookWidget extends StatelessWidget {
                                 ),
                       ),
                     ),
-                    PopupMenuButton(
-                      itemBuilder: (context) {
-                        return [
-                          PopupMenuItem(
-                            onTap: () {
+                    widget.isReadingList
+                        ? IconButton(
+                            onPressed: () {
                               context
                                   .read<ReadingListViewModel>()
-                                  .deleteBookById(
-                                    id: item.id ?? "",
-                                  );
+                                  .deleteBookById(id: widget.id);
                             },
-                            child: Row(
-                              children: [
-                                Text("To read"),
-                              ],
+                            icon: const Icon(
+                              Icons.delete,
                             ),
-                          ),
-                          PopupMenuItem(
-                            onTap: () {
-                              context.read<ReadingListViewModel>().addBook(
-                                    id: item.id ?? "",
-                                    authors: item.volumeInfo?.authors ?? [],
-                                    imageUrl: item.volumeInfo?.imageLinks
-                                            ?.thumbnail ??
-                                        "",
-                                    title: item.volumeInfo?.title ?? "",
-                                    language: item.volumeInfo?.language ?? "",
-                                    status: BookStatus.currentlyReading,
-                                    pageCount: item.volumeInfo?.pageCount ?? 0,
-                                  );
-                            },
-                            child: Text(
-                              "Currently Reading",
-                            ),
-                          ),
-                          PopupMenuItem(
-                            onTap: () {
-                              // TODO:
-                            },
-                            child: Text("Read"),
                           )
-                        ];
-                      },
-                    )
+                        : PopupMenuButton(
+                            itemBuilder: (context) {
+                              return [
+                                PopupMenuItem(
+                                  onTap: () {
+                                    context
+                                        .read<ReadingListViewModel>()
+                                        .addBook(
+                                          id: widget.id,
+                                          authors: widget.authors,
+                                          imageUrl: widget.imageUrl ?? "",
+                                          title: widget.title ?? "Title N/A",
+                                          language: widget.language ?? "N/A",
+                                          status: BookStatus.toRead,
+                                          pageCount: widget.pages ?? 0,
+                                        );
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Text("To read"),
+                                    ],
+                                  ),
+                                ),
+                                PopupMenuItem(
+                                  onTap: () {
+                                    context
+                                        .read<ReadingListViewModel>()
+                                        .addBook(
+                                          id: widget.id,
+                                          authors: widget.authors,
+                                          imageUrl: widget.imageUrl ?? "",
+                                          title: widget.title ?? "Title N/A",
+                                          language: widget.language ?? "N/A",
+                                          status: BookStatus.currentlyReading,
+                                          pageCount: widget.pages ?? 0,
+                                        );
+                                  },
+                                  child: Text(
+                                    "Currently Reading",
+                                  ),
+                                ),
+                                PopupMenuItem(
+                                  onTap: () {
+                                    context
+                                        .read<ReadingListViewModel>()
+                                        .addBook(
+                                          id: widget.id,
+                                          authors: widget.authors,
+                                          imageUrl: widget.imageUrl ?? "",
+                                          title: widget.title ?? "Title N/A",
+                                          language: widget.language ?? "N/A",
+                                          status: BookStatus.read,
+                                          pageCount: widget.pages ?? 0,
+                                        );
+                                  },
+                                  child: Text("Read"),
+                                )
+                              ];
+                            },
+                          )
                   ],
                 ),
                 const SizedBox(height: 8),
-
-                if (item.volumeInfo?.authors != null)
-                  Text(
-                    item.volumeInfo!.authors.join(", "),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
-                      fontWeight: FontWeight.bold,
-                    ),
+                Text(
+                  widget.authors.join(", "),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey[600],
+                    fontWeight: FontWeight.bold,
                   ),
+                ),
                 const SizedBox(height: 8),
                 // Info Row
                 Wrap(
@@ -138,15 +183,15 @@ class BookWidget extends StatelessWidget {
                   children: [
                     _buildInfoChip(
                       icon: Icons.auto_stories_outlined,
-                      label: "${item.volumeInfo?.pageCount ?? 'N/A'} pages",
+                      label: "${widget.pages ?? 'N/A'} pages",
                     ),
                     _buildInfoChip(
                       icon: Icons.language_outlined,
-                      label: item.volumeInfo?.language?.toUpperCase() ?? 'N/A',
+                      label: widget.language?.toUpperCase() ?? 'N/A',
                     ),
                     _buildRatingChip(
-                      rating: item.volumeInfo?.averageRating ?? 0,
-                      count: item.volumeInfo?.ratingsCount ?? 0,
+                      rating: widget.rating ?? 0,
+                      count: widget.ratingsCount ?? 0,
                     ),
                   ],
                 ),
