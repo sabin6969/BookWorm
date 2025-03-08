@@ -12,13 +12,6 @@ class BookWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 4,
-      margin: const EdgeInsets.symmetric(
-        vertical: 8,
-        horizontal: 16,
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -117,6 +110,7 @@ class BookWidget extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.grey[600],
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 const SizedBox(height: 8),

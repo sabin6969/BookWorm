@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/constants/view_state_enum.dart';
+import '../summary/book_summary_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -18,7 +19,10 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
-        context.read<BookViewModel>().getBookDetails();
+        if (context.read<BookViewModel>().currentViewState !=
+            ViewState.sucess) {
+          context.read<BookViewModel>().getBookDetails();
+        }
       },
     );
     super.initState();
@@ -61,10 +65,24 @@ class _HomeViewState extends State<HomeView> {
                 child: ListView.builder(
                   itemCount: value.bookResponseModel.items.length,
                   itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: BookWidget(
-                        item: value.bookResponseModel.items[index],
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BookSummaryView(
+                              item: value.bookResponseModel.items[index],
+                            ),
+                          ),
+                        );
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(
+                          12,
+                        ),
+                        child: BookWidget(
+                          item: value.bookResponseModel.items[index],
+                        ),
                       ),
                     );
                   },
