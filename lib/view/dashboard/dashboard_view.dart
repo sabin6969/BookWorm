@@ -1,9 +1,7 @@
-import 'package:bookworm/repository/book_repository.dart';
 import 'package:bookworm/view/home/home_view.dart';
 import 'package:bookworm/view/profile/profile_view.dart';
-import 'package:bookworm/view_model/book_view_model.dart';
+import 'package:bookworm/view/reading_list/reading_list.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../home/widgets/animated_bottom_nav_item.dart';
 
@@ -19,9 +17,7 @@ class _DashboardViewState extends State<DashboardView> {
 
   final List<Widget> _pages = [
     HomeView(),
-    Center(
-      child: Text("Reading List!"),
-    ),
+    ReadingList(),
     ProfileView(),
   ];
 

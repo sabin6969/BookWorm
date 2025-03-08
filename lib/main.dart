@@ -1,8 +1,11 @@
+import 'package:bookworm/core/di/service_locator.dart';
 import 'package:bookworm/core/routes/route_generator.dart';
 import 'package:bookworm/repository/book_repository.dart';
+import 'package:bookworm/repository/reading_list_repository.dart';
 import 'package:bookworm/services/shared_preference_services.dart';
 import 'package:bookworm/view/dashboard/dashboard_view.dart';
 import 'package:bookworm/view_model/book_view_model.dart';
+import 'package:bookworm/view_model/reading_list_view_model.dart';
 import 'package:bookworm/view_model/theme_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,9 +19,13 @@ void main() async {
 
   await SharedPreferenceServices.initPrefs();
 
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-  ]);
+  setUp(); // setting up the dependency injection from Database
+
+  await SystemChrome.setPreferredOrientations(
+    [
+      DeviceOrientation.portraitUp,
+    ],
+  );
 
   runApp(const MyApp());
 }
@@ -36,6 +43,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => BookViewModel(
             bookRepository: BookRepository(),
+          ),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ReadingListViewModel(
+            readingListRepository: ReadingListRepository(),
           ),
         )
       ],

@@ -1,5 +1,8 @@
+import 'package:bookworm/core/constants/book_status.dart';
 import 'package:bookworm/model/book_response_model.dart';
+import 'package:bookworm/view_model/reading_list_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BookWidget extends StatelessWidget {
   final Item item;
@@ -73,7 +76,11 @@ class BookWidget extends StatelessWidget {
                         return [
                           PopupMenuItem(
                             onTap: () {
-                              // TODO:
+                              context
+                                  .read<ReadingListViewModel>()
+                                  .deleteBookById(
+                                    id: item.id ?? "",
+                                  );
                             },
                             child: Row(
                               children: [
@@ -83,7 +90,17 @@ class BookWidget extends StatelessWidget {
                           ),
                           PopupMenuItem(
                             onTap: () {
-                              // TODO:
+                              context.read<ReadingListViewModel>().addBook(
+                                    id: item.id ?? "",
+                                    authors: item.volumeInfo?.authors ?? [],
+                                    imageUrl: item.volumeInfo?.imageLinks
+                                            ?.thumbnail ??
+                                        "",
+                                    title: item.volumeInfo?.title ?? "",
+                                    language: item.volumeInfo?.language ?? "",
+                                    status: BookStatus.currentlyReading,
+                                    pageCount: item.volumeInfo?.pageCount ?? 0,
+                                  );
                             },
                             child: Text(
                               "Currently Reading",
