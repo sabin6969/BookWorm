@@ -12,7 +12,7 @@ class NetworkApi extends BaseApi {
       Response response = await get(uri).timeout(
           timeLimit ??
               Duration(
-                seconds: 20,
+                seconds: 15,
               ), // Default timeout duration
           onTimeout: () => throw TimeoutException());
       return _getResponseBody(response: response);

@@ -1,5 +1,6 @@
 import 'package:bookworm/repository/book_repository.dart';
 import 'package:bookworm/view/home/home_view.dart';
+import 'package:bookworm/view/profile/profile_view.dart';
 import 'package:bookworm/view_model/book_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,19 +18,11 @@ class _DashboardViewState extends State<DashboardView> {
   late ValueNotifier<int> _currentIndex;
 
   final List<Widget> _pages = [
-    ChangeNotifierProvider(
-      lazy: true,
-      create: (context) => BookViewModel(
-        bookRepository: BookRepository(),
-      ),
-      child: HomeView(),
-    ),
+    HomeView(),
     Center(
       child: Text("Reading List!"),
     ),
-    Center(
-      child: Text("Profile View"),
-    )
+    ProfileView(),
   ];
 
   @override
@@ -78,7 +71,7 @@ class _DashboardViewState extends State<DashboardView> {
                     Icons.book_outlined,
                   ),
                 ),
-                label: "Book",
+                label: "Reading List",
               ),
               BottomNavigationBarItem(
                 icon: AnimatedBottomNavItem(

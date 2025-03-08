@@ -24,6 +24,11 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => ThemeViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => BookViewModel(
+            bookRepository: BookRepository(),
+          ),
         )
       ],
       child: Consumer<ThemeViewModel>(

@@ -26,6 +26,7 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -37,10 +38,12 @@ class _HomeViewState extends State<HomeView> {
             onPressed: () {
               context.read<ThemeViewModel>().toogleTheme();
             },
-            icon: Icon(
-              context.read<ThemeViewModel>().isDarkTheme
-                  ? Icons.sunny
-                  : Icons.dark_mode,
+            icon: Consumer<ThemeViewModel>(
+              builder: (context, value, child) {
+                return Icon(
+                  value.isDarkTheme ? Icons.sunny : Icons.dark_mode,
+                );
+              },
             ),
           )
         ],
@@ -68,8 +71,26 @@ class _HomeViewState extends State<HomeView> {
                 ),
               );
             case ViewState.error:
-              return Center(
-                child: Text("An error occured"),
+              return SizedBox(
+                height: size.height,
+                width: size.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      value.errorMessage ?? "An unknown error occured!",
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        value.getBookDetails();
+                      },
+                      child: const Text(
+                        "Retry",
+                      ),
+                    )
+                  ],
+                ),
               );
             default:
               return SizedBox.shrink();

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:bookworm/core/constants/view_state_enum.dart';
 import 'package:bookworm/data/exceptions/app_exception.dart';
@@ -36,6 +37,9 @@ class BookViewModel with ChangeNotifier {
       _changeViewState = ViewState.sucess;
     } on AppException catch (e) {
       _errorMessage = e.message;
+      _changeViewState = ViewState.error;
+    } on SocketException {
+      _errorMessage = "No internet connection.";
       _changeViewState = ViewState.error;
     } catch (e) {
       _errorMessage = "Something went wrong";
