@@ -5,6 +5,7 @@ import 'package:bookworm/view/dashboard/dashboard_view.dart';
 import 'package:bookworm/view_model/book_view_model.dart';
 import 'package:bookworm/view_model/theme_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -14,6 +15,10 @@ void main() async {
   await dotenv.load(fileName: ".env");
 
   await SharedPreferenceServices.initPrefs();
+
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
 
   runApp(const MyApp());
 }
