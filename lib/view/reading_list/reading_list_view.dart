@@ -51,10 +51,10 @@ class _ReadingListState extends State<ReadingList> {
                 ),
                 items: BookStatus.values
                     .map(
-                      (e) => DropdownMenuItem(
-                        value: e,
+                      (status) => DropdownMenuItem(
+                        value: status,
                         child: Text(
-                          e.readableString,
+                          status.readableString,
                         ),
                       ),
                     )
@@ -108,7 +108,7 @@ class _ReadingListState extends State<ReadingList> {
                         ),
                         Center(
                           child: Text(
-                            "Reading list is empty try adding some!",
+                            "${value.bookStatus == null ? "Reading List" : "${value.bookStatus!.readableString} List"} is empty try adding some!",
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
