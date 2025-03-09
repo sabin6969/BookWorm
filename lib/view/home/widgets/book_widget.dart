@@ -1,7 +1,7 @@
 import 'package:bookworm/core/constants/book_status.dart';
+import 'package:bookworm/core/extensions/book_status_extension.dart';
 import 'package:bookworm/view_model/reading_list_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
 class BookWidget extends StatefulWidget {
@@ -32,6 +32,40 @@ class BookWidget extends StatefulWidget {
 }
 
 class _BookWidgetState extends State<BookWidget> {
+  void _handleAddToReadingList({
+    required String id,
+    required List<String> authors,
+    required String? imageUrl,
+    required String? title,
+    required String? language,
+    required BookStatus status,
+    required int? pageCount,
+    required BuildContext context,
+  }) async {
+    late String message;
+    var data = await context.read<ReadingListViewModel>().addBook(
+          id: id,
+          authors: authors,
+          imageUrl: imageUrl ?? "",
+          title: title ?? "Title N/A",
+          language: language ?? "N/A",
+          status: status,
+          pageCount: widget.pages ?? 0,
+        );
+    message = data
+        ? "${widget.title} sucessfully added to ${status.readableString} list"
+        : "${widget.title} is already in reading list";
+
+    // ensuring that the context is still the part of widget tree before showing the snackbar
+    context.mounted
+        ? ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(message),
+            ),
+          )
+        : null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -107,17 +141,16 @@ class _BookWidgetState extends State<BookWidget> {
                               return [
                                 PopupMenuItem(
                                   onTap: () {
-                                    context
-                                        .read<ReadingListViewModel>()
-                                        .addBook(
-                                          id: widget.id,
-                                          authors: widget.authors,
-                                          imageUrl: widget.imageUrl ?? "",
-                                          title: widget.title ?? "Title N/A",
-                                          language: widget.language ?? "N/A",
-                                          status: BookStatus.toRead,
-                                          pageCount: widget.pages ?? 0,
-                                        );
+                                    _handleAddToReadingList(
+                                      authors: widget.authors,
+                                      id: widget.id,
+                                      context: context,
+                                      imageUrl: widget.imageUrl,
+                                      language: widget.language,
+                                      pageCount: widget.pages,
+                                      status: BookStatus.toRead,
+                                      title: widget.title,
+                                    );
                                   },
                                   child: Row(
                                     children: [
@@ -127,17 +160,16 @@ class _BookWidgetState extends State<BookWidget> {
                                 ),
                                 PopupMenuItem(
                                   onTap: () {
-                                    context
-                                        .read<ReadingListViewModel>()
-                                        .addBook(
-                                          id: widget.id,
-                                          authors: widget.authors,
-                                          imageUrl: widget.imageUrl ?? "",
-                                          title: widget.title ?? "Title N/A",
-                                          language: widget.language ?? "N/A",
-                                          status: BookStatus.currentlyReading,
-                                          pageCount: widget.pages ?? 0,
-                                        );
+                                    _handleAddToReadingList(
+                                      authors: widget.authors,
+                                      id: widget.id,
+                                      context: context,
+                                      imageUrl: widget.imageUrl,
+                                      language: widget.language,
+                                      pageCount: widget.pages,
+                                      status: BookStatus.currentlyReading,
+                                      title: widget.title,
+                                    );
                                   },
                                   child: Text(
                                     "Currently Reading",
@@ -145,17 +177,16 @@ class _BookWidgetState extends State<BookWidget> {
                                 ),
                                 PopupMenuItem(
                                   onTap: () {
-                                    context
-                                        .read<ReadingListViewModel>()
-                                        .addBook(
-                                          id: widget.id,
-                                          authors: widget.authors,
-                                          imageUrl: widget.imageUrl ?? "",
-                                          title: widget.title ?? "Title N/A",
-                                          language: widget.language ?? "N/A",
-                                          status: BookStatus.read,
-                                          pageCount: widget.pages ?? 0,
-                                        );
+                                    _handleAddToReadingList(
+                                      authors: widget.authors,
+                                      id: widget.id,
+                                      context: context,
+                                      imageUrl: widget.imageUrl,
+                                      language: widget.language,
+                                      pageCount: widget.pages,
+                                      status: BookStatus.read,
+                                      title: widget.title,
+                                    );
                                   },
                                   child: Text("Read"),
                                 )

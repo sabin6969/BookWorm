@@ -1,3 +1,4 @@
+import 'package:bookworm/view/reading/reading_view.dart';
 import 'package:flutter/material.dart';
 
 class BookSummaryView extends StatefulWidget {
@@ -25,6 +26,25 @@ class BookSummaryViewState extends State<BookSummaryView> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BookReadingView(
+                    title: widget.title,
+                    authors: widget.authors,
+                    thumbnailUrl: widget.thumbnailUrl,
+                  ),
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.visibility,
+            ),
+          )
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),

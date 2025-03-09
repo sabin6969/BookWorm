@@ -12,9 +12,14 @@ class ReadingListViewModel extends ChangeNotifier {
 
   List<BookTableData> get bookTableData => _bookTableData;
 
+  late List<BookTableData> _searchedBookTableData;
+  List<BookTableData> get searchedBookTableData => _searchedBookTableData;
+
   BookStatus? _bookStatus;
 
   BookStatus? get bookStatus => _bookStatus;
+
+  String searchQuery = "";
 
   set selectBookStatus(BookStatus newBookStatus) {
     if (newBookStatus != _bookStatus) {
@@ -32,6 +37,17 @@ class ReadingListViewModel extends ChangeNotifier {
       _currentViewState = newViewState;
       notifyListeners();
     }
+  }
+
+  void searchByTitle() {
+    _searchedBookTableData = bookTableData
+        .where(
+          (element) => element.bookTitle
+              .toLowerCase()
+              .contains(searchQuery.trim().toLowerCase()),
+        )
+        .toList();
+    notifyListeners();
   }
 
   void getAllSavedBooks({
@@ -60,7 +76,7 @@ class ReadingListViewModel extends ChangeNotifier {
     }
   }
 
-  void addBook({
+  Future<bool> addBook({
     required String id,
     required List<String> authors,
     required String imageUrl,
@@ -80,8 +96,10 @@ class ReadingListViewModel extends ChangeNotifier {
           pageCount: pageCount,
           status: status);
       _changeViewState = ViewState.sucess;
+      return true;
     } catch (e) {
       _changeViewState = ViewState.error;
+      return false;
     } finally {
       _changeViewState = ViewState.idel;
     }
