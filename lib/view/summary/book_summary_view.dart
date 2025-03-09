@@ -1,11 +1,14 @@
-import 'package:bookworm/model/book_response_model.dart';
 import 'package:flutter/material.dart';
 
 class BookSummaryView extends StatefulWidget {
-  final Item item;
+  final String title;
+  final List<String> authors;
+  final String thumbnailUrl;
   const BookSummaryView({
     super.key,
-    required this.item,
+    required this.title,
+    required this.authors,
+    required this.thumbnailUrl,
   });
 
   @override
@@ -18,7 +21,7 @@ class BookSummaryViewState extends State<BookSummaryView> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.item.volumeInfo?.title ?? "Title N/A",
+          widget.title,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
@@ -30,7 +33,12 @@ class BookSummaryViewState extends State<BookSummaryView> {
           children: [
             Center(
               child: Image.network(
-                widget.item.volumeInfo?.imageLinks?.thumbnail ?? "",
+                widget.thumbnailUrl,
+                errorBuilder: (context, error, stackTrace) {
+                  return Icon(
+                    Icons.error,
+                  );
+                },
               ),
             ),
             Chip(
@@ -44,10 +52,10 @@ class BookSummaryViewState extends State<BookSummaryView> {
                 spacing: 10,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: List.generate(
-                  (widget.item.volumeInfo?.authors.length) ?? 0,
+                  (widget.authors.length),
                   (index) => Chip(
                     label: Text(
-                      widget.item.volumeInfo?.authors[index] ?? "N/A",
+                      widget.authors[index],
                     ),
                   ),
                 ),

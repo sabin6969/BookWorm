@@ -71,7 +71,15 @@ class _HomeViewState extends State<HomeView> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => BookSummaryView(
-                              item: value.bookResponseModel.items[index],
+                              title: value.bookResponseModel.items[index]
+                                      .volumeInfo?.title ??
+                                  "Title N/A",
+                              authors: value.bookResponseModel.items[index]
+                                      .volumeInfo?.authors ??
+                                  [],
+                              thumbnailUrl: value.bookResponseModel.items[index]
+                                      .volumeInfo?.imageLinks?.thumbnail ??
+                                  "",
                             ),
                           ),
                         );

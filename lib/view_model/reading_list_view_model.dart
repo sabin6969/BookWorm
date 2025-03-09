@@ -82,6 +82,8 @@ class ReadingListViewModel extends ChangeNotifier {
       _changeViewState = ViewState.sucess;
     } catch (e) {
       _changeViewState = ViewState.error;
+    } finally {
+      _changeViewState = ViewState.idel;
     }
   }
 }

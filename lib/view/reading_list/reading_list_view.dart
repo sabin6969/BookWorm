@@ -4,6 +4,7 @@ import 'package:bookworm/core/extensions/book_status_extension.dart';
 import 'package:bookworm/local_db/app_db.dart';
 import 'package:bookworm/main.dart' show size;
 import 'package:bookworm/view/home/widgets/book_widget.dart';
+import 'package:bookworm/view/summary/book_summary_view.dart';
 import 'package:bookworm/view_model/reading_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -121,16 +122,30 @@ class _ReadingListState extends State<ReadingList> {
                       itemCount: value.bookTableData.length,
                       itemBuilder: (context, index) {
                         BookTableData data = value.bookTableData[index];
-                        return BookWidget(
-                          imageUrl: data.imageUrl,
-                          authors: data.authors,
-                          title: data.bookTitle,
-                          pages: data.pages,
-                          ratingsCount: 0,
-                          id: data.id,
-                          language: data.language,
-                          rating: 0,
-                          isReadingList: true,
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BookSummaryView(
+                                  title: data.bookTitle,
+                                  thumbnailUrl: data.imageUrl,
+                                  authors: data.authors,
+                                ),
+                              ),
+                            );
+                          },
+                          child: BookWidget(
+                            imageUrl: data.imageUrl,
+                            authors: data.authors,
+                            title: data.bookTitle,
+                            pages: data.pages,
+                            ratingsCount: 0,
+                            id: data.id,
+                            language: data.language,
+                            rating: 0,
+                            isReadingList: true,
+                          ),
                         );
                       },
                     );
