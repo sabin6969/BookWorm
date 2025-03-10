@@ -23,7 +23,7 @@ class _DashboardViewState extends State<DashboardView> {
 
   @override
   void initState() {
-    _currentIndex = ValueNotifier(0); // inital 0th page
+    _currentIndex = ValueNotifier(0); // initial 0th page
     super.initState();
   }
 
