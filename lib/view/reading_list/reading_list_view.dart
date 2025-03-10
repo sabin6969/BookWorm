@@ -136,116 +136,111 @@ class _ReadingListState extends State<ReadingList> {
                         ),
                       ],
                     )
-                  : Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                      ),
-                      child: Column(
-                        children: [
-                          TextFormField(
-                            controller: _textEditingController,
-                            decoration: InputDecoration(
-                              suffixIcon: value.searchQuery.isNotEmpty
-                                  ? IconButton(
-                                      onPressed: () {
-                                        _textEditingController.clear();
-                                      },
-                                      icon: const Icon(
-                                        Icons.clear,
-                                      ),
-                                    )
-                                  : null,
-                              hintText: "Search by title",
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(
-                                  12,
-                                ),
+                  : Column(
+                      children: [
+                        TextFormField(
+                          controller: _textEditingController,
+                          decoration: InputDecoration(
+                            suffixIcon: value.searchQuery.isNotEmpty
+                                ? IconButton(
+                                    onPressed: () {
+                                      _textEditingController.clear();
+                                    },
+                                    icon: const Icon(
+                                      Icons.clear,
+                                    ),
+                                  )
+                                : null,
+                            hintText: "Search by title",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(
+                                12,
                               ),
                             ),
                           ),
-                          Expanded(
-                            child: value.searchQuery.isNotEmpty
-                                ? value.searchedBookTableData.isEmpty
-                                    ? Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "No results found for book titled ${value.searchQuery}",
-                                            textAlign: TextAlign.center,
-                                          )
-                                        ],
-                                      )
-                                    : ListView.builder(
-                                        itemCount:
-                                            value.searchedBookTableData.length,
-                                        itemBuilder: (context, index) {
-                                          BookTableData data = value
-                                              .searchedBookTableData[index];
-                                          return InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      BookSummaryView(
-                                                    title: data.bookTitle,
-                                                    thumbnailUrl: data.imageUrl,
-                                                    authors: data.authors,
-                                                  ),
+                        ),
+                        Expanded(
+                          child: value.searchQuery.isNotEmpty
+                              ? value.searchedBookTableData.isEmpty
+                                  ? Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "No results found for book titled ${value.searchQuery}",
+                                          textAlign: TextAlign.center,
+                                        )
+                                      ],
+                                    )
+                                  : ListView.builder(
+                                      itemCount:
+                                          value.searchedBookTableData.length,
+                                      itemBuilder: (context, index) {
+                                        BookTableData data =
+                                            value.searchedBookTableData[index];
+                                        return InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    BookSummaryView(
+                                                  title: data.bookTitle,
+                                                  thumbnailUrl: data.imageUrl,
+                                                  authors: data.authors,
                                                 ),
-                                              );
-                                            },
-                                            child: BookWidget(
-                                              imageUrl: data.imageUrl,
-                                              authors: data.authors,
-                                              title: data.bookTitle,
-                                              pages: data.pages,
-                                              ratingsCount: 0,
-                                              id: data.id,
-                                              language: data.language,
-                                              rating: 0,
-                                              isReadingList: true,
-                                            ),
-                                          );
-                                        },
-                                      )
-                                : ListView.builder(
-                                    itemCount: value.bookTableData.length,
-                                    itemBuilder: (context, index) {
-                                      BookTableData data =
-                                          value.bookTableData[index];
-                                      return InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  BookSummaryView(
-                                                title: data.bookTitle,
-                                                thumbnailUrl: data.imageUrl,
-                                                authors: data.authors,
                                               ),
+                                            );
+                                          },
+                                          child: BookWidget(
+                                            imageUrl: data.imageUrl,
+                                            authors: data.authors,
+                                            title: data.bookTitle,
+                                            pages: data.pages,
+                                            ratingsCount: 0,
+                                            id: data.id,
+                                            language: data.language,
+                                            rating: 0,
+                                            isReadingList: true,
+                                          ),
+                                        );
+                                      },
+                                    )
+                              : ListView.builder(
+                                  itemCount: value.bookTableData.length,
+                                  itemBuilder: (context, index) {
+                                    BookTableData data =
+                                        value.bookTableData[index];
+                                    return InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                BookSummaryView(
+                                              title: data.bookTitle,
+                                              thumbnailUrl: data.imageUrl,
+                                              authors: data.authors,
                                             ),
-                                          );
-                                        },
-                                        child: BookWidget(
-                                          imageUrl: data.imageUrl,
-                                          authors: data.authors,
-                                          title: data.bookTitle,
-                                          pages: data.pages,
-                                          ratingsCount: 0,
-                                          id: data.id,
-                                          language: data.language,
-                                          rating: 0,
-                                          isReadingList: true,
-                                        ),
-                                      );
-                                    },
-                                  ),
-                          ),
-                        ],
-                      ),
+                                          ),
+                                        );
+                                      },
+                                      child: BookWidget(
+                                        imageUrl: data.imageUrl,
+                                        authors: data.authors,
+                                        title: data.bookTitle,
+                                        pages: data.pages,
+                                        ratingsCount: 0,
+                                        id: data.id,
+                                        language: data.language,
+                                        rating: 0,
+                                        isReadingList: true,
+                                      ),
+                                    );
+                                  },
+                                ),
+                        ),
+                      ],
                     );
             case ViewState.loading:
               return const Center(

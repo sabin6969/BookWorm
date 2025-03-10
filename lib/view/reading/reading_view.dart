@@ -24,20 +24,20 @@ class _BookReadingViewState extends State<BookReadingView> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.grey[100],
         title: Text(
           widget.title,
           style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w500,
-            color: Colors.black87,
           ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.text_decrease, color: Colors.black54),
+            icon: const Icon(
+              Icons.text_decrease,
+            ),
             onPressed: () {
               setState(() {
                 _textSize = (_textSize > 12) ? _textSize - 2 : _textSize;
@@ -45,7 +45,7 @@ class _BookReadingViewState extends State<BookReadingView> {
             },
           ),
           IconButton(
-            icon: const Icon(Icons.text_increase, color: Colors.black54),
+            icon: const Icon(Icons.text_increase),
             onPressed: () {
               setState(() {
                 _textSize = (_textSize < 24) ? _textSize + 2 : _textSize;
@@ -55,7 +55,6 @@ class _BookReadingViewState extends State<BookReadingView> {
         ],
       ),
       body: Container(
-        color: Colors.grey[50],
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,7 +73,6 @@ class _BookReadingViewState extends State<BookReadingView> {
                       return const Icon(
                         Icons.book,
                         size: 60,
-                        color: Colors.grey,
                       );
                     },
                   ),
@@ -89,7 +87,6 @@ class _BookReadingViewState extends State<BookReadingView> {
                         style: const TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black87,
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -97,7 +94,6 @@ class _BookReadingViewState extends State<BookReadingView> {
                         "by ${widget.authors.join(', ')}",
                         style: const TextStyle(
                           fontSize: 16,
-                          color: Colors.grey,
                         ),
                       ),
                     ],
@@ -118,7 +114,6 @@ class _BookReadingViewState extends State<BookReadingView> {
                     style: TextStyle(
                       fontSize: _textSize,
                       height: 1.6,
-                      color: Colors.black87,
                       fontFamily: 'Georgia',
                     ),
                     textAlign: TextAlign.justify,
