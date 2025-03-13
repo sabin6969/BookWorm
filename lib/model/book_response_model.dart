@@ -6,7 +6,7 @@ class BookResponseModel {
   });
 
   final String? kind;
-  final int? totalItems;
+  final num? totalItems;
   final List<Item> items;
 
   factory BookResponseModel.fromJson(Map<String, dynamic> json) {
@@ -193,11 +193,11 @@ class VolumeInfo {
   final String? publishedDate;
   final List<IndustryIdentifier> industryIdentifiers;
   final ReadingModes? readingModes;
-  final int? pageCount;
+  final num? pageCount;
   final String? printType;
   final List<String> categories;
-  final int? averageRating;
-  final int? ratingsCount;
+  final num? averageRating;
+  final num? ratingsCount;
   final String? maturityRating;
   final bool? allowAnonLogging;
   final String? contentVersion;

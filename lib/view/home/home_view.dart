@@ -97,14 +97,16 @@ class _HomeViewState extends State<HomeView> {
                               .volumeInfo?.imageLinks?.thumbnail,
                           language: value.bookResponseModel.items[index]
                               .volumeInfo?.language,
-                          pages: value.bookResponseModel.items[index].volumeInfo
-                              ?.pageCount,
+                          pages: (value.bookResponseModel.items[index]
+                                  .volumeInfo?.pageCount)
+                              ?.toInt(),
                           rating: value.bookResponseModel.items[index]
                               .volumeInfo?.averageRating,
                           title: value
                               .bookResponseModel.items[index].volumeInfo?.title,
-                          ratingsCount: value.bookResponseModel.items[index]
-                              .volumeInfo?.ratingsCount,
+                          ratingsCount: (value.bookResponseModel.items[index]
+                                  .volumeInfo?.ratingsCount)
+                              ?.toInt(),
                         ),
                       ),
                     );
